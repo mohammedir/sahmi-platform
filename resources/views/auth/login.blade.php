@@ -1,9 +1,9 @@
     <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
 <!--begin::Head-->
 <head>
     <base href="../../../" />
-    <title>Metronic - The World's #1 Selling Tailwind CSS & Bootstrap Admin Template by KeenThemes</title>
+    <title>Login To Sahme</title>
     <meta charset="utf-8" />
     <meta name="description" content="The most advanced Tailwind CSS & Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
     <meta name="keywords" content="tailwind, tailwindcss, metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
@@ -19,8 +19,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    @if(App::getLocale() == 'ar')
+        <link href="{{asset('assets/css/style.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/plugins/global/plugins.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
+    @else
+        <link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
+    @endif
     <!--end::Global Stylesheets Bundle-->
     <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 </head>
@@ -51,12 +56,9 @@
             <div class="d-flex flex-center flex-lg-start flex-column">
                 <!--begin::Logo-->
                 <a href="index.html" class="mb-7">
-                    <img alt="Logo" src="assets/media/logos/custom-3.svg" />
+                    <img alt="Logo" src="assets/sahmi/media/picsvg_download.svg" />
                 </a>
                 <!--end::Logo-->
-                <!--begin::Title-->
-                <h2 class="text-white fw-normal m-0">Branding tools designed for your business</h2>
-                <!--end::Title-->
             </div>
             <!--begin::Aside-->
         </div>
@@ -74,28 +76,8 @@
                             <!--begin::Title-->
                             <h1 class="text-gray-900 fw-bolder mb-3">@lang('admin.Sign in')</h1>
                             <!--end::Title-->
-                            <!--begin::Subtitle-->
-                            <div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
-                            <!--end::Subtitle=-->
                         </div>
                         <!--begin::Heading-->
-                        <!--begin::Login options-->
-                        <div class="row g-3 mb-9">
-                            <!--begin::Col-->
-                            <div class="col-md-12">
-                                <!--begin::Google link=-->
-                                <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                    <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />@lang('admin.Sign in with Google')</a>
-                                <!--end::Google link=-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Login options-->
-                        <!--begin::Separator-->
-                        <div class="separator separator-content my-14">
-                            <span class="w-125px text-gray-500 fw-semibold fs-7">@lang('admin.Or with email')</span>
-                        </div>
-                        <!--end::Separator-->
                         <!--begin::Input group=-->
                         <div class="fv-row mb-8">
                             <!--begin::Email-->
@@ -143,7 +125,7 @@
                     <!--begin::Links-->
                     <div class="d-flex fw-semibold text-primary fs-base gap-5">
                         <a href="" target="_blank">@lang('admin.Terms')</a>
-                        <a href="pages/contact.html" target="_blank">@lang('admin.Contact Us')</a>
+                        <a href="" target="_blank">@lang('admin.Contact Us')</a>
                     </div>
                     <!--end::Links-->
                 </div>
