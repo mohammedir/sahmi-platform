@@ -25,6 +25,8 @@ return [
     'Edit Role' => 'تعديل الدور',
     'Use 8 or more characters with a mix of letters, numbers & symbols.' => 'استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز.',
     'Repeat Password' => 'كرر كلمة المرور',
+    'Permissions' => 'الأذونات',
+    'Roles List' => 'قائمة الأدوار',
 
     /*UserManagement*/
     "User Management" => "إدارة المستخدمين",
@@ -46,6 +48,8 @@ return [
     "Allowed file types: png, jpg, jpeg."  => "الملفات المسموحة png ,jpg ,jpeg",
     "Remove avatar"  => "حذف الصورة",
     "Change avatar"  => "تغيير الصورة",
+    "View User"  => "عرض المستخدم",
+    "User created successfully"  => "تم إنشاء المستخدم بنجاح",
 
     /*message*/
     'Email address is required' => 'عنوان البريد الإلكتروني مطلوب',
@@ -59,5 +63,7 @@ return [
     'Please fix the errors in the form.' => 'يرجى تصحيح الأخطاء الموجودة في النموذج.',
     'Invalid email address' => 'عنوان البريد الإلكتروني غير صالح',
     'Full Name Filed is required' => 'الاسم الكامل مطلوب',
+
+
 
 ];

@@ -27,26 +27,82 @@
             }
         });
 
-        $('#kt_modal_add_user_form').submit(function (e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('kt_modal_add_user_form');
 
-            var formData = new FormData(this);
-
-            $.ajax({
-                url: "{{ route('users.store') }}",
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    // Handle the response, e.g., close modal and update user list
-                    alert('User created successfully');
-
+            const validator = FormValidation.formValidation(form, {
+                fields: {
+                    user_name: {
+                        validators: {
+                            notEmpty: {
+                                message: '@lang("admin.Full Name Filed is required")',
+                            }
+                        }
+                    },
+                    user_email: {
+                        validators: {
+                            notEmpty: {
+                                message: '@lang("admin.Email address is required")',
+                            },
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: '@lang("admin.Invalid email address")',
+                            }
+                        }
+                    },
+                    user_role: {
+                        validators: {
+                            notEmpty: {
+                                message: '@lang("admin.Role is required")',
+                            }
+                        }
+                    }
                 },
-                error: function(xhr) {
-                    // Handle errors
-                    alert('There was an error.');
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap5: new FormValidation.plugins.Bootstrap5({
+                        rowSelector: '.fv-row',
+                        eleInvalidClass: 'is-invalid',
+                        eleValidClass: 'is-valid',
+                        messageClass: 'fv-help-block'
+                    }),
+                    submitButton: new FormValidation.plugins.SubmitButton()
                 }
+            });
+
+            // AJAX Submit
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                validator.validate().then(function (status) {
+                    if (status === 'Valid') {
+                        const formData = new FormData(form);
+
+                        $.ajax({
+                            url: "{{ route('users.store') }}",
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                Swal.fire({
+                                    text: "@lang('admin.User created successfully')",
+                                    icon: "success",
+                                    confirmButtonText: "@lang('admin.OK')",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    },
+                                });
+                                form.reset();
+                                validator.resetForm(true);
+                                // Close modal if needed: $('#kt_modal_add_user').modal('hide');
+                            },
+                            error: function (xhr) {
+                                alert('There was an error.');
+                            }
+                        });
+                    }
+                });
             });
         });
 

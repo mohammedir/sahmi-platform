@@ -1,6 +1,5 @@
 <?php
 return [
-
         'custom' => [
             'email' => [
                 'required' => 'حقل الإيمل مطلوب',
@@ -9,7 +8,8 @@ return [
             ],
             'password' => [
                 'required' => 'حقل الباسوورد مطلوب',
-            ]
+            ],
+
         ],
 ];
 

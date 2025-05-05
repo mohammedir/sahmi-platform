@@ -84,7 +84,7 @@
                             confirmButtonText: "@lang('admin.OK')",
                             customClass: {
                                 confirmButton: "btn btn-primary"
-                            }
+                            },
                         }).then(() => {
                             const redirectUrl = form.getAttribute('data-kt-redirect-url');
                             if (redirectUrl) {

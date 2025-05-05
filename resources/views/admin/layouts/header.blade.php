@@ -14,7 +14,7 @@
                 </button>
                 <!--end::Heaeder navs toggle-->
                 <!--begin::Logo-->
-                <a href="index.html" class="d-flex align-items-center">
+                <a href="{{route('dashboard')}}" class="d-flex align-items-center">
                     <img alt="Logo" src="{{asset('assets/sahmi/media/logo.jpeg')}}" class="h-25px h-lg-30px" />
                 </a>
                 <!--end::Logo-->
@@ -2682,7 +2682,7 @@
 																			<span class="menu-bullet">
 																				<span class="bullet bullet-dot"></span>
 																			</span>
-																			<span class="menu-title">Users</span>
+																			<span class="menu-title">@lang('admin.Users')</span>
 																			<span class="menu-arrow"></span>
 																		</span>
                                                     <!--end:Menu link-->
@@ -2695,7 +2695,7 @@
 																					<span class="menu-bullet">
 																						<span class="bullet bullet-dot"></span>
 																					</span>
-                                                                <span class="menu-title">Users List</span>
+                                                                <span class="menu-title">@lang('admin.Users List')</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -2707,7 +2707,7 @@
 																					<span class="menu-bullet">
 																						<span class="bullet bullet-dot"></span>
 																					</span>
-                                                                <span class="menu-title">View User</span>
+                                                                <span class="menu-title">@lang('admin.View User')</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -2736,7 +2736,7 @@
 																					<span class="menu-bullet">
 																						<span class="bullet bullet-dot"></span>
 																					</span>
-                                                                <span class="menu-title">Roles List</span>
+                                                                <span class="menu-title">@lang('admin.Roles List')</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -2748,7 +2748,7 @@
 																					<span class="menu-bullet">
 																						<span class="bullet bullet-dot"></span>
 																					</span>
-                                                                <span class="menu-title">View Roles</span>
+                                                                <span class="menu-title">@lang('admin.View Roles')</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -2764,7 +2764,7 @@
 																			<span class="menu-bullet">
 																				<span class="bullet bullet-dot"></span>
 																			</span>
-                                                        <span class="menu-title">Permissions</span>
+                                                        <span class="menu-title">@lang('admin.Permissions')</span>
                                                     </a>
                                                     <!--end:Menu link-->
                                                 </div>

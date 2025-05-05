@@ -78,6 +78,9 @@
                                 confirmButtonText: "Ok, got it!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
+                                },
+                                didOpen: () => {
+                                    document.querySelector('.swal2-popup').dir = 'rtl';
                                 }
                             }).then(function (result) {
                                 if (result.isConfirmed) {
@@ -92,6 +95,7 @@
                                 }
                             });
                         }, 2000);
+
                     } else {
                         // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                         Swal.fire({
@@ -157,15 +161,36 @@
                                 });
                             }
                         }).catch(function (error) {
-                            Swal.fire({
-                                text: "Sorry, looks like there are some errors detected, please try again.",
-                                icon: "error",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
+                            if (error.response && error.response.status === 422) {
+                                // Laravel validation error
+                                const errors = error.response.data.errors;
+                                let errorMessages = '';
+
+                                for (const key in errors) {
+                                    if (errors.hasOwnProperty(key)) {
+                                        errorMessages += `${errors[key][0]}<br>`;
+                                    }
                                 }
-                            });
+
+                                Swal.fire({
+                                    html: errorMessages,
+                                    icon: "error",
+                                    confirmButtonText: "@lang('admin.OK')",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                });
+                            } else {
+                                // General error
+                                Swal.fire({
+                                    text: "@lang('admin.Sorry, an error occurred. Please try again.')",
+                                    icon: "error",
+                                    confirmButtonText: "@lang('admin.OK')",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                });
+                            }
                         }).then(() => {
                             // Hide loading indication
                             submitButton.removeAttribute('data-kt-indicator');
