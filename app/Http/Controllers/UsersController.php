@@ -21,37 +21,55 @@ class UsersController extends Controller
     }
 
     public function store(Request $request)
-        {
+    {
+        try {
             // Validate the request data
-            $request->validate([
+            $validated = $request->validate([
                 'user_name' => 'required|string|max:255',
                 'user_email' => 'required|email|unique:users,email',
                 'user_role' => 'required|exists:roles,id',
-                'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Avatar validation
+                'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
-            // Handle avatar upload if present
+            // Handle avatar upload
             if ($request->hasFile('avatar')) {
                 $avatarPath = $request->file('avatar')->store('avatars', 'public');
             } else {
-                $avatarPath = null; // Or set a default avatar path
+                $avatarPath = null;
             }
 
-            // Create the new user
+            // Create user
             $user = User::create([
-                'name' => $request->input('user_name'),
-                'email' => $request->input('user_email'),
-                'password' => Hash::make('defaultpassword'), // Set a default password, or use another approach
+                'name' => $validated['user_name'],
+                'email' => $validated['user_email'],
+                'password' => Hash::make('defaultpassword'),
                 'avatar' => $avatarPath,
             ]);
 
-            // Attach the role to the user
-            $role = Role::find($request->input('user_role'));
+            // Attach role
+            $role = Role::find($validated['user_role']);
             $user->roles()->attach($role);
 
-            // Return success response
-            return redirect()->route('users.index')->with('success', 'User created successfully!');
+            // Return JSON success response
+            return response()->json([
+                'message' => 'User created successfully!',
+                'user' => $user
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return validation errors in JSON format
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            // Return general error
+            return response()->json([
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage()
+            ], 500);
         }
+    }
+
 
     public function edit(User $user)
     {

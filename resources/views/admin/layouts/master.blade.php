@@ -15,6 +15,7 @@ License: For each use you must have a valid license purchased only from above li
 <head>
     <title>Metronic - The World's #1 Selling Tailwind CSS & Bootstrap Admin Template by KeenThemes</title>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="The most advanced Tailwind CSS & Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
     <meta name="keywords" content="tailwind, tailwindcss, metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -2394,7 +2395,7 @@ License: For each use you must have a valid license purchased only from above li
 											</span></label>
                                     <!--End::Label-->
                                     <!--begin::Tagify-->
-                                    <input class="form-control d-flex align-items-center" value="" id="kt_modal_create_campaign_location" data-kt-flags-path="assets/media/flags/" />
+                                    <input class="form-control d-flex align-items-center" value="" id="kt_modal_create_campaign_location" />
                                     <!--end::Tagify-->
                                 </div>
                                 <!--end::Input group-->

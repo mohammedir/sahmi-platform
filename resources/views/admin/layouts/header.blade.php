@@ -2701,6 +2701,7 @@
                                                         </div>
                                                         <!--end:Menu item-->
                                                         <!--begin:Menu item-->
+                                                        @can('view users')
                                                         <div class="menu-item">
                                                             <!--begin:Menu link-->
                                                             <a class="menu-link py-3" href="apps/user-management/users/view.html">
@@ -2712,6 +2713,7 @@
                                                             <!--end:Menu link-->
                                                         </div>
                                                         <!--end:Menu item-->
+                                                        @endcan
                                                     </div>
                                                     <!--end:Menu sub-->
                                                 </div>

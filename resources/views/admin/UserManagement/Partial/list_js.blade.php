@@ -1,4 +1,6 @@
-<script>
+<script type="module">
+    "use strict";
+
     $(document).ready(function () {
         let table = $("#kt_table_users").DataTable({
             processing: true,
@@ -27,85 +29,241 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('kt_modal_add_user_form');
+// Class definition
+        var KTUsersAddUser = function () {
+            // Shared variables
+            const element = document.getElementById('kt_modal_add_user');
+            const form = element.querySelector('#kt_modal_add_user_form');
+            const modal = new bootstrap.Modal(element);
 
-            const validator = FormValidation.formValidation(form, {
-                fields: {
-                    user_name: {
-                        validators: {
-                            notEmpty: {
-                                message: '@lang("admin.Full Name Filed is required")',
-                            }
-                        }
-                    },
-                    user_email: {
-                        validators: {
-                            notEmpty: {
-                                message: '@lang("admin.Email address is required")',
+            // Init add schedule modal
+            var initAddUser = () => {
+                // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+                var validator = FormValidation.formValidation(
+                    form,
+                    {
+                        fields: {
+                            'user_name': {
+                                validators: {
+                                    notEmpty: {
+                                        message: '@lang('admin.Full Name Filed is required')'
+                                    }
+                                }
                             },
-                            regexp: {
-                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                message: '@lang("admin.Invalid email address")',
-                            }
-                        }
-                    },
-                    user_role: {
-                        validators: {
-                            notEmpty: {
-                                message: '@lang("admin.Role is required")',
-                            }
+                            'user_email': {
+                                validators: {
+                                    notEmpty: { message: '@lang('admin.Email address is required')' },
+                                    regexp: {
+                                        regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message: '@lang('admin.Invalid email address')',
+                                    }
+                                }
+                            },
+                        },
+
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger(),
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: '.fv-row',
+                                eleInvalidClass: '',
+                                eleValidClass: ''
+                            })
                         }
                     }
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap5: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: '.fv-row',
-                        eleInvalidClass: 'is-invalid',
-                        eleValidClass: 'is-valid',
-                        messageClass: 'fv-help-block'
-                    }),
-                    submitButton: new FormValidation.plugins.SubmitButton()
-                }
-            });
+                );
 
-            // AJAX Submit
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+                // Submit button handler
+                const submitButton = element.querySelector('[data-kt-users-modal-action="submit"]');
+                submitButton.addEventListener('click', e => {
+                    e.preventDefault();
 
-                validator.validate().then(function (status) {
-                    if (status === 'Valid') {
-                        const formData = new FormData(form);
+                    // Validate form before submit
+                    if (validator) {
+                        validator.validate().then(function (status) {
 
-                        $.ajax({
-                            url: "{{ route('users.store') }}",
-                            method: 'POST',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
+                            if (status == 'Valid') {
+                                // Show loading indication
+                                submitButton.setAttribute('data-kt-indicator', 'on');
+
+                                // Disable button to avoid multiple click
+                                submitButton.disabled = true;
+
+                                // Simulate form submission. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                                setTimeout(function () {
+                                    // Remove loading indication
+                                    submitButton.removeAttribute('data-kt-indicator');
+
+                                    // Enable button
+                                    submitButton.disabled = false;
+                                    const formData = new FormData(form); // Handles file uploads too
+
+                                    // Show popup confirmation
+
+                                    fetch('{{ route('users.store') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        },
+                                        body: formData
+                                    })
+                                        .then(async response => {
+                                            submitButton.removeAttribute('data-kt-indicator');
+                                            submitButton.disabled = false;
+
+                                            const data = await response.json();
+
+                                            if (response.ok) {
+                                                Swal.fire({
+                                                    text: "@lang('admin.Form has been successfully submitted!')",
+                                                    icon: "success",
+                                                    buttonsStyling: false,
+                                                    confirmButtonText: "@lang('admin.OK')",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-primary"
+                                                    }
+                                                }).then(function (result) {
+                                                    if (result.isConfirmed) {
+                                                        form.reset();
+                                                    }
+                                                });
+                                            } else if (response.status === 422) {
+                                                // Laravel validation errors
+                                                let errorMessages = Object.values(data.errors).flat().join('<br>');
+                                                Swal.fire({
+                                                    html: `<div class="text-start">${errorMessages}</div>`,
+                                                    icon: "error",
+                                                    buttonsStyling: false,
+                                                    confirmButtonText: "@lang('admin.OK')",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-danger"
+                                                    }
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    text: data.message || "Something went wrong.",
+                                                    icon: "error",
+                                                    buttonsStyling: false,
+                                                    confirmButtonText: "@lang('admin.OK')",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-danger"
+                                                    }
+                                                });
+                                            }
+                                        })
+                                        .catch(error => {
+                                            submitButton.removeAttribute('data-kt-indicator');
+                                            submitButton.disabled = false;
+
+                                            Swal.fire({
+                                                text: "Unexpected error: " + error.message,
+                                                icon: "error",
+                                                buttonsStyling: false,
+                                                confirmButtonText: "@lang('admin.OK')",
+                                                customClass: {
+                                                    confirmButton: "btn btn-danger"
+                                                }
+                                            });
+                                        });
+
+                                    //form.submit(); // Submit form
+                                }, 2000);
+                            } else {
+                                // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                                 Swal.fire({
-                                    text: "@lang('admin.User created successfully')",
-                                    icon: "success",
+                                    text: "@lang('admin.Sorry, looks like there are some errors detected, please try again.')",
+                                    icon: "error",
+                                    buttonsStyling: false,
                                     confirmButtonText: "@lang('admin.OK')",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
-                                    },
+                                    }
                                 });
-                                form.reset();
-                                validator.resetForm(true);
-                                // Close modal if needed: $('#kt_modal_add_user').modal('hide');
-                            },
-                            error: function (xhr) {
-                                alert('There was an error.');
                             }
                         });
                     }
                 });
-            });
-        });
 
+                // Cancel button handler
+                const cancelButton = element.querySelector('[data-kt-users-modal-action="cancel"]');
+                cancelButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        text: "@lang('admin.Are you sure you would like to cancel?')",
+                        icon: "warning",
+                        showCancelButton: true,
+                        buttonsStyling: false,
+                        confirmButtonText: "@lang('admin.Yes, cancel it!')",
+                        cancelButtonText: "No, return",
+                        customClass: {
+                            confirmButton: "btn btn-primary",
+                            cancelButton: "btn btn-active-light"
+                        }
+                    }).then(function (result) {
+                        if (result.value) {
+                            form.reset(); // Reset form
+                            modal.hide();
+                        } else if (result.dismiss === 'cancel') {
+                            Swal.fire({
+                                text: "Your form has not been cancelled!.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Close button handler
+                const closeButton = element.querySelector('[data-kt-users-modal-action="close"]');
+                closeButton.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        text: "Are you sure you would like to cancel?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        buttonsStyling: false,
+                        confirmButtonText: "Yes, cancel it!",
+                        cancelButtonText: "No, return",
+                        customClass: {
+                            confirmButton: "btn btn-primary",
+                            cancelButton: "btn btn-active-light"
+                        }
+                    }).then(function (result) {
+                        if (result.value) {
+                            form.reset(); // Reset form
+                            modal.hide();
+                        } else if (result.dismiss === 'cancel') {
+                            Swal.fire({
+                                text: "Your form has not been cancelled!.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+
+            return {
+                // Public functions
+                init: function () {
+                    initAddUser();
+                }
+            };
+        }();
+
+// On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTUsersAddUser.init();
+        });
     });
 
 </script>

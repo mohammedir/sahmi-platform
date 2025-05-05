@@ -27,6 +27,13 @@ return [
     'Repeat Password' => 'كرر كلمة المرور',
     'Permissions' => 'الأذونات',
     'Roles List' => 'قائمة الأدوار',
+    'Add a Role' => 'أضف دورًا',
+    'Role name' => 'أسم الدور',
+    'Role Permissions' => 'أذونات الدور',
+    'Administrator Access' => 'وصول المسؤول',
+    'Allows a full access to the system' => 'يسمح بالوصول الكامل إلى النظام',
+    'Select all' => 'حدد الكل',
+    'Enter a role name' => 'أدخل اسم الدور',
 
     /*UserManagement*/
     "User Management" => "إدارة المستخدمين",
@@ -50,6 +57,12 @@ return [
     "Change avatar"  => "تغيير الصورة",
     "View User"  => "عرض المستخدم",
     "User created successfully"  => "تم إنشاء المستخدم بنجاح",
+    "Form has been successfully submitted!"  => "تم إرسال النموذج بنجاح!",
+    "Sorry, looks like there are some errors detected, please try again."  => "عذراً، يبدو أنه تم اكتشاف بعض الأخطاء، يرجى المحاولة مرة أخرى.",
+    "Are you sure you would like to cancel?"  => "هل أنت متأكد أنك تريد الإلغاء؟",
+    "Yes, cancel it!"  => "نعم، قم بإلغائه!",
+    "No, return"  => "لا، العودة",
+    "Add New Role"  => "إضافة دور جديد",
 
     /*message*/
     'Email address is required' => 'عنوان البريد الإلكتروني مطلوب',
